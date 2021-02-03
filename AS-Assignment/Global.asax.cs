@@ -17,5 +17,9 @@ namespace AS_Assignment
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+        protected void Application_BeginRequest()
+        {
+            Response.AddHeader("X-Frame-Options", "DENY");
+        }
     }
 }
