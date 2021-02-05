@@ -31,7 +31,7 @@
     <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" />
     <script>
         grecaptcha.ready(function (){
-            grecaptcha.execute('6Lfen0caAAAAAD9YV-mh8RsrQu2ShOq3SoOiLm6U', { action: 'Login' }).then(function (token) {
+            grecaptcha.execute('', { action: 'Login' }).then(function (token) {
                 document.getElementById("g-recaptcha-response").value = token;
             })
         })
