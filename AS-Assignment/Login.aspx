@@ -21,6 +21,7 @@
             <td style="width: 174px">&nbsp;</td>
             <td style="width: 226px">
                 <asp:Button ID="btn_login" runat="server" OnClick="btn_login_Click" Text="Submit" />
+                <asp:Button ID="btn_unlock" runat="server" OnClick="btn_unlock_Click" Text="Unlock" Visible="False" />
             </td>
             <td>
                   <asp:Label ID="lbl_error_msg" runat="server" Text="" ViewStateMode="Enabled"></asp:Label>

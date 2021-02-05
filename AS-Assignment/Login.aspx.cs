@@ -36,14 +36,14 @@ namespace AS_Assignment
             string email = tb_emailLogin.Text.ToString().Trim();
             if(email != null)
             {
-                ViewState[email] = ViewState[email] == null ? 0 : (int)ViewState[email];
+                  Session[email] = Session[email] == null ? 0 : (int)Session[email];
             }
             SHA512Managed hashing = new SHA512Managed();
             string dbHash = getDBHash(email);
             string dbSalt = getDBSalt(email);
             try
             {
-                if ((int)ViewState[email] <= 3)
+                if ((int)Session[email] < 3)
                 {
                     if (dbSalt != null && dbSalt.Length != 0 && dbHash != null && dbHash.Length != 0)
                     {
@@ -58,14 +58,14 @@ namespace AS_Assignment
                                 string guid = Guid.NewGuid().ToString();
                                 Session["AuthToken"] = guid;
                                 Response.Cookies.Add(new HttpCookie("AuthToken", guid));
-                                ViewState[email]= 0;
+                                Session[email]= 0;
                                 Response.Redirect("Success.aspx", false);
                             }
                             else
                             {
-                                int attempts = (int)ViewState[email];
+                                int attempts = (int)Session[email];
                                 attempts += 1;
-                                ViewState[email] = attempts;
+                                Session[email] = attempts;
                                 lbl_error_msg.Text = "Email or Password is incorrect! Please try again.";
                                 lbl_error_msg.ForeColor = System.Drawing.Color.Red;
 
@@ -75,18 +75,18 @@ namespace AS_Assignment
                     }
                     else
                     {
-                        int attempts = (int)ViewState[email];
+                        int attempts = (int)Session[email];
                         attempts += 1;
-                        ViewState[email] = attempts;
-                        Debug.WriteLine(ViewState["attempts"]);
+                        Session[email] = attempts;
                         lbl_error_msg.Text = "Email or Password is incorrect! Please try again.";
                         lbl_error_msg.ForeColor = System.Drawing.Color.Red;
                     }
                 }
                 else
                 {
-                    lbl_error_msg.Text = "Your account is locked. Please contact the administrator.";
+                    lbl_error_msg.Text = "Your account is locked. Please click unlock button to unlock your account.";
                     lbl_error_msg.ForeColor = System.Drawing.Color.Red;
+                    btn_unlock.Visible = true;
                 }
             }
             catch (Exception ex)
@@ -183,6 +183,11 @@ namespace AS_Assignment
             {
                 throw ex;
             }
+        }
+
+        protected void btn_unlock_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("unlock.aspx", false);
         }
     }
 }
