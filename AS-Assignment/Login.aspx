@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="AS_Assignment.Login" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <script src="https://www.google.com/recaptcha/api.js?render=6Lfen0caAAAAAD9YV-mh8RsrQu2ShOq3SoOiLm6U"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render="></script>
    
     <table style="width:100%;">
         <tr>
