@@ -6,7 +6,7 @@
         <tr>
             <td style="width: 174px">Email:</td>
             <td style="width: 226px">
-                <asp:TextBox ID="tb_emailLogin" runat="server"></asp:TextBox>
+                <asp:TextBox ID="tb_emailLogin" runat="server" TextMode="Email"></asp:TextBox>
             </td>
             <td>&nbsp;</td>
         </tr>

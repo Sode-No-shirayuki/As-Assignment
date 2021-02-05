@@ -34,13 +34,16 @@ namespace AS_Assignment
         {
             string pwd = tb_pwdLogin.Text.ToString().Trim();
             string email = tb_emailLogin.Text.ToString().Trim();
-            ViewState["attempts"] = ViewState["attempts"] == null ? 0 : (int)ViewState["attempts"];
+            if(email != null)
+            {
+                ViewState[email] = ViewState[email] == null ? 0 : (int)ViewState[email];
+            }
             SHA512Managed hashing = new SHA512Managed();
             string dbHash = getDBHash(email);
             string dbSalt = getDBSalt(email);
             try
             {
-                if ((int)ViewState["attempts"] <= 3)
+                if ((int)ViewState[email] <= 3)
                 {
                     if (dbSalt != null && dbSalt.Length != 0 && dbHash != null && dbHash.Length != 0)
                     {
@@ -55,14 +58,14 @@ namespace AS_Assignment
                                 string guid = Guid.NewGuid().ToString();
                                 Session["AuthToken"] = guid;
                                 Response.Cookies.Add(new HttpCookie("AuthToken", guid));
-                                ViewState["attempts"]= 0;
+                                ViewState[email]= 0;
                                 Response.Redirect("Success.aspx", false);
                             }
                             else
                             {
-                                int attempts = (int)ViewState["attempts"];
+                                int attempts = (int)ViewState[email];
                                 attempts += 1;
-                                ViewState["attempts"] = attempts;
+                                ViewState[email] = attempts;
                                 lbl_error_msg.Text = "Email or Password is incorrect! Please try again.";
                                 lbl_error_msg.ForeColor = System.Drawing.Color.Red;
 
@@ -72,9 +75,9 @@ namespace AS_Assignment
                     }
                     else
                     {
-                        int attempts = (int)ViewState["attempts"];
+                        int attempts = (int)ViewState[email];
                         attempts += 1;
-                        ViewState["attempts"] = attempts;
+                        ViewState[email] = attempts;
                         Debug.WriteLine(ViewState["attempts"]);
                         lbl_error_msg.Text = "Email or Password is incorrect! Please try again.";
                         lbl_error_msg.ForeColor = System.Drawing.Color.Red;

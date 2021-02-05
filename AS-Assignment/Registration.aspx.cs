@@ -105,9 +105,16 @@ namespace AS_Assignment
             cipher.GenerateKey();
             Key = cipher.Key;
             IV = cipher.IV;
-
-            createAccount();
-            Response.Redirect("Login.aspx", false);
+            if(validateEmail(tb_email.Text.ToString()) == true)
+            {
+                lbl_errorMsg.Text = "Email already exist";
+            }
+            else
+            {
+                createAccount();
+                Response.Redirect("Login.aspx", false);
+            }
+            
         }
         private int pwdChecker(string password)
         {
@@ -185,6 +192,36 @@ namespace AS_Assignment
             }
             finally { }
             return cipherText;
+        }
+        public bool validateEmail(string email)
+        {
+            var exist = false;
+            SqlConnection sqlCon = new SqlConnection(DBConnectionString);
+            string sql = "SELECT Email FROM Account WHERE Email=@userId";
+            SqlCommand sqlCmd = new SqlCommand(sql, sqlCon);
+            sqlCmd.Parameters.AddWithValue("@userId", email);
+            try
+            {
+                sqlCon.Open();
+                using (SqlDataReader reader = sqlCmd.ExecuteReader())
+                {
+
+                    while (reader.Read())
+                    {
+                        if (reader["Email"] != DBNull.Value)
+                        {
+                           exist = true;
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+            finally { sqlCon.Close(); }
+            return exist;
         }
     }   
 }
